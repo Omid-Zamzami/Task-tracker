@@ -5,12 +5,13 @@ def welcome():
 
 def main_menu():
     print("***** Main menu *****")
-    print("1. Observe tasks (all, todo, in-progress, done)")
-    print("2. Mark task")
-    print("3. Add task")
-    print("4. Update task")
-    print("5. Delete task\n")
+    print("1. Add task")
+    print("2. Update task")
+    print("3. Delete task")
+    print("4. Mark task")
+    print("5. Observe tasks (all, todo, in-progress, done)\n")
 
+tasks = {}
 
 welcome()
 while True:
@@ -24,17 +25,17 @@ while True:
     match user_input:
         case 1:
             pass
-            #Observe_task()
+            #Add_task()
         case 2:
             pass
-            #Mark_task()
+            #Update_task()
         case 3:
             pass
-            #Add_task()
+            #Delete_task()
         case 4:
             pass
-            #Update_task()
+            #Mark_task()
         case 5:
             pass
-            #Delete_task()
+            #Observe_task()
     break

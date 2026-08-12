@@ -1,3 +1,8 @@
+from datetime import datetime
+
+tasks_list = []
+id = 1
+
 def welcome():
     print("***** Welcome to Task Tracker *****")
     print("You can Add, Update, and Delete tasks.")
@@ -11,7 +16,29 @@ def main_menu():
     print("4. Mark task")
     print("5. Observe tasks (all, todo, in-progress, done)\n")
 
-tasks = {}
+def add_task():
+    task = {}
+    global id
+    task_id = id
+    id += 1
+    task_description = input("Enter your task's description: ")
+    task_status = input("Enter your task's status (todo, in-progress, or done): ").lower()
+    while task_status not in ["todo", "in-progress", "done"]:
+        print("Wrong input! Try again.")
+        task_status = input("Enter your task's status (todo, in-progress, or done): ")
+    created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    task["id"] = task_id
+    task["description"] = task_description
+    task["status"] = task_status
+    task["created_at"] = created_at
+    tasks_list.append(task)
+    
+    print(f"Task '{task_description}' created")
+    print(f"Task id: {task_id}")
+    print(f"Status: {task_status}")
+    print(f"Created at: {created_at}")
+
 
 welcome()
 while True:
@@ -24,8 +51,7 @@ while True:
             print("Oops, Wrong input!")
     match user_input:
         case 1:
-            pass
-            #Add_task()
+            add_task()
         case 2:
             pass
             #Update_task()
@@ -38,4 +64,3 @@ while True:
         case 5:
             pass
             #Observe_task()
-    break

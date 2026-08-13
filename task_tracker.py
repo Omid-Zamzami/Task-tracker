@@ -39,11 +39,33 @@ def add_task():
     print(f"Status: {task_status}")
     print(f"Created at: {created_at}")
 
+def update_task():
+    task_id = 0
+    number_of_tasks = len(tasks_list)
+    while task_id < 1 or task_id > number_of_tasks:
+        try:
+            task_id = int(input(f"Enter the ID of the task you want to update (1-{number_of_tasks}) : "))
+        except ValueError:
+            print(f"wrong input! Try a number in the correct range (1-{number_of_tasks}) : ")
+
+    for task in tasks_list:
+        if task["id"] == task_id:
+            print(f"The task's previous description: {task["description"]}")
+            new_description = input("Update the description: ")
+            updated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            task["description"] = new_description
+            task["updated_at"] = updated_at
+
+            print("Task description updated")
+            print(f"New task description: {task["description"]}")
+            print(f"Task updated at: {task["updated_at"]}")
+            break
+
 
 welcome()
 while True:
     main_menu()
-    user_input = None
+    user_input = 0
     while user_input not in [1, 2, 3, 4, 5]:
         try:
             user_input = int(input("Enter your number of choice (1-5): "))
@@ -53,8 +75,7 @@ while True:
         case 1:
             add_task()
         case 2:
-            pass
-            #Update_task()
+            update_task()
         case 3:
             pass
             #Delete_task()

@@ -8,6 +8,7 @@ def welcome():
     print("You can Add, Update, and Delete tasks.")
     print("Also you will be able to observe the status on your tasks and mark them as todo, in-progress, or done.\n")
 
+
 def main_menu():
     print("***** Main menu *****")
     print("1. Add task")
@@ -15,6 +16,7 @@ def main_menu():
     print("3. Delete task")
     print("4. Mark task")
     print("5. Observe tasks (all, todo, in-progress, done)\n")
+
 
 def add_task():
     task = {}
@@ -39,27 +41,29 @@ def add_task():
     print(f"Status: {task_status}")
     print(f"Created at: {created_at}")
 
+
 def update_task():
     task_id = 0
     number_of_tasks = len(tasks_list)
     while task_id < 1 or task_id > number_of_tasks:
         try:
-            task_id = int(input(f"Enter the ID of the task you want to update (1-{number_of_tasks}): "))
+            task_id = int(input(f"Enter the task's id that you want to update (1-{number_of_tasks}): "))
         except ValueError:
-            print(f"wrong input! Try a number in the correct range (1-{number_of_tasks}): ")
+            print(f"wrong input! Try a number in the correct range (1-{number_of_tasks}). ")
 
     for task in tasks_list:
         if task["id"] == task_id:
             print(f"The task's previous description: {task["description"]}")
             new_description = input("Update the description: ")
-            updated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            updated_description_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             task["description"] = new_description
-            task["updated_at"] = updated_at
+            task["updated_description_at"] = updated_description_at
 
             print("Task description updated")
             print(f"New task description: {task["description"]}")
-            print(f"Task updated at: {task["updated_at"]}")
+            print(f"Task updated at: {task["updated_description_at"]}")
             break
+
 
 def delete_task():
     global id
@@ -67,7 +71,7 @@ def delete_task():
     number_of_tasks = len(tasks_list)
     while task_id < 1 or task_id > number_of_tasks:
         try:
-            task_id = int(input(f"Enter the ID of the task you want to delete (1-{number_of_tasks}): "))
+            task_id = int(input(f"Enter the task's id that you want to delete (1-{number_of_tasks}): "))
         except ValueError:
             print(f"wrong input! Try a number in the correct range (1-{number_of_tasks}).")
 
@@ -89,6 +93,31 @@ def delete_task():
                 id -= 1
 
 
+def mark_task():
+    task_id = 0
+    number_of_tasks = len(tasks_list)
+    while task_id < 1 or task_id > number_of_tasks:
+        try:
+            task_id = int(input(f"Enter the task's id that you want to change its status (1-{number_of_tasks}): "))
+        except ValueError:
+            print(f"wrong input! Try a number in the correct range (1-{number_of_tasks}).")
+
+    for task in tasks_list:
+        if task["id"] == task_id:
+            new_status = input(f"Enter the new status for {task["description"]} (todo, in-progress, or done): ").lower()
+            while new_status not in ["todo", "in-progress", "done"]:
+                new_status = input("Wrong input! Try again: ")
+            updated_status_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+            task["status"] = new_status
+            task["updated_status_at"] = updated_status_at
+
+            print("Task status updated")
+            print(f"New task status: {task["status"]}")
+            print(f"Task updated at: {task["updated_status_at"]}")
+            break
+
+
 welcome()
 while True:
     main_menu()
@@ -106,8 +135,7 @@ while True:
         case 3:
             delete_task()
         case 4:
-            pass
-            #Mark_task()
+            mark_task()
         case 5:
             pass
             #Observe_task()

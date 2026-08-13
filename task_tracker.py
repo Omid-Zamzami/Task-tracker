@@ -15,7 +15,7 @@ def main_menu():
     print("2. Update task")
     print("3. Delete task")
     print("4. Mark task")
-    print("5. Observe tasks (all, todo, in-progress, done)\n")
+    print("5. Observe tasks (all tasks, todo, in-progress, done)\n")
 
 
 def add_task():
@@ -23,11 +23,12 @@ def add_task():
     global id
     task_id = id
     id += 1
+
     task_description = input("Enter your task's description: ")
     task_status = input("Enter your task's status (todo, in-progress, or done): ").lower()
     while task_status not in ["todo", "in-progress", "done"]:
         print("Wrong input! Try again.")
-        task_status = input("Enter your task's status (todo, in-progress, or done): ")
+        task_status = input("Enter your task's status (todo, in-progress, or done): ").lower()
     created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     task["id"] = task_id
@@ -118,6 +119,27 @@ def mark_task():
             break
 
 
+def observe_task():
+    user_status = input("Enter status to see the task(s) with the same status (all tasks, todo, in-progress, done): ").lower()
+    while user_status not in ["all tasks", "todo", "in-progress", "done"]:
+        user_status = input("Wrong input! Try again (all tasks, todo, in-progress, done): ").lower()
+
+    print()
+
+    if user_status == "all tasks":
+        for task in tasks_list:
+            for key, value in task.items():
+                print(f"{key}: {value}")
+            print()
+
+    else:
+        for task in tasks_list:
+            if task["status"] == user_status:
+                for key, value in task.items():
+                    print(f"{key}: {value}")
+                print()
+
+
 welcome()
 while True:
     main_menu()
@@ -137,5 +159,4 @@ while True:
         case 4:
             mark_task()
         case 5:
-            pass
-            #Observe_task()
+            observe_task()

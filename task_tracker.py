@@ -44,9 +44,9 @@ def update_task():
     number_of_tasks = len(tasks_list)
     while task_id < 1 or task_id > number_of_tasks:
         try:
-            task_id = int(input(f"Enter the ID of the task you want to update (1-{number_of_tasks}) : "))
+            task_id = int(input(f"Enter the ID of the task you want to update (1-{number_of_tasks}): "))
         except ValueError:
-            print(f"wrong input! Try a number in the correct range (1-{number_of_tasks}) : ")
+            print(f"wrong input! Try a number in the correct range (1-{number_of_tasks}): ")
 
     for task in tasks_list:
         if task["id"] == task_id:
@@ -60,6 +60,33 @@ def update_task():
             print(f"New task description: {task["description"]}")
             print(f"Task updated at: {task["updated_at"]}")
             break
+
+def delete_task():
+    global id
+    task_id = 0
+    number_of_tasks = len(tasks_list)
+    while task_id < 1 or task_id > number_of_tasks:
+        try:
+            task_id = int(input(f"Enter the ID of the task you want to delete (1-{number_of_tasks}): "))
+        except ValueError:
+            print(f"wrong input! Try a number in the correct range (1-{number_of_tasks}).")
+
+    for task in tasks_list:
+        if task["id"] == task_id:
+            choice = input(f"Are you sure you want to delete {task["description"]} (yes/no, y/n)? ").lower()
+            while choice not in ["y", "yes", "n", "no"]:
+                choice = input("Wrong input! Try again (yes/no)? ").lower()
+            if choice in ["n", "no"]:
+                print(f"Task {task["description"]} was not deleted.")
+                break
+            else:
+                deleted_id = task["id"]
+                print(f"task {task["description"]} deleted successfully")
+                tasks_list.remove(task)
+                for other_task in tasks_list:
+                    if other_task["id"] > deleted_id:
+                        other_task["id"] -= 1
+                id -= 1
 
 
 welcome()
@@ -77,8 +104,7 @@ while True:
         case 2:
             update_task()
         case 3:
-            pass
-            #Delete_task()
+            delete_task()
         case 4:
             pass
             #Mark_task()

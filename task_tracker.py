@@ -1,3 +1,4 @@
+import sys
 from datetime import datetime
 
 tasks_list = []
@@ -15,7 +16,8 @@ def main_menu():
     print("2. Update task")
     print("3. Delete task")
     print("4. Mark task")
-    print("5. Observe tasks (all tasks, todo, in-progress, done)\n")
+    print("5. Observe tasks (all tasks, todo, in-progress, done)")
+    print("6. Quit Task Tracker\n")
 
 
 def add_task():
@@ -80,7 +82,7 @@ def delete_task():
         if task["id"] == task_id:
             choice = input(f"Are you sure you want to delete {task["description"]} (yes/no, y/n)? ").lower()
             while choice not in ["y", "yes", "n", "no"]:
-                choice = input("Wrong input! Try again (yes/no)? ").lower()
+                choice = input("Wrong input! Try again (yes/no, y/n): ").lower()
             if choice in ["n", "no"]:
                 print(f"Task {task["description"]} was not deleted.")
                 break
@@ -140,13 +142,24 @@ def observe_task():
                 print()
 
 
+def quit_task_tracker():
+    choice = input("Are you sure you want to quit Task Tracker (yes/no, y/n)? ").lower()
+    while choice not in ["y", "yes", "n", "no"]:
+        choice = input("Wrong input! Try again (yes/no, y/n): ").lower()
+    if choice in ["y", "yes"]:
+        print("Thank you for using Task Tracker! Goodbye!")
+        sys.exit()
+    else:
+        pass
+
+
 welcome()
 while True:
     main_menu()
     user_input = 0
-    while user_input not in [1, 2, 3, 4, 5]:
+    while user_input not in [1, 2, 3, 4, 5, 6]:
         try:
-            user_input = int(input("Enter your number of choice (1-5): "))
+            user_input = int(input("Enter your number of choice (1-6): "))
         except ValueError:
             print("Oops, Wrong input!")
     match user_input:
@@ -160,3 +173,5 @@ while True:
             mark_task()
         case 5:
             observe_task()
+        case 6:
+            quit_task_tracker()

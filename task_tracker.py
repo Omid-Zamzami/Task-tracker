@@ -1,8 +1,28 @@
 import sys
 from datetime import datetime
+import json
 
-tasks_list = []
-id = 1
+
+initial_dict = {"tasks": []}
+
+try:
+    with open("tasks.json", "r") as file:
+        initial_dict = json.load(file)
+
+except FileNotFoundError:
+    with open("tasks.json", "w") as file:
+        json.dump(initial_dict, file, indent=2)
+
+tasks_list = initial_dict["tasks"]
+tasks_dict = {"tasks": tasks_list}
+
+id = 0
+if not tasks_list:
+    id = 1
+else:
+    last_task = len(tasks_list) - 1
+    id = tasks_list[last_task]["id"] + 1
+
 
 def welcome():
     print("***** Welcome to Task Tracker *****")
@@ -18,7 +38,6 @@ def main_menu():
     print("4. Mark task")
     print("5. Observe tasks (all tasks, todo, in-progress, done)")
     print("6. Quit Task Tracker\n")
-
 
 def add_task():
     task = {}
@@ -38,11 +57,14 @@ def add_task():
     task["status"] = task_status
     task["created_at"] = created_at
     tasks_list.append(task)
-    
+
     print(f"Task '{task_description}' created")
     print(f"Task id: {task_id}")
     print(f"Status: {task_status}")
     print(f"Created at: {created_at}")
+
+    with open("tasks.json", "w") as file:
+        json.dump(tasks_dict, file, indent=2)
 
 
 def update_task():
@@ -66,6 +88,9 @@ def update_task():
             print(f"New task description: {task["description"]}")
             print(f"Task updated at: {task["updated_description_at"]}")
             break
+
+    with open("tasks.json", "w") as file:
+        json.dump(tasks_dict, file, indent=2)
 
 
 def delete_task():
@@ -95,6 +120,9 @@ def delete_task():
                         other_task["id"] -= 1
                 id -= 1
 
+    with open("tasks.json", "w") as file:
+        json.dump(tasks_dict, file, indent=2)
+
 
 def mark_task():
     task_id = 0
@@ -119,6 +147,9 @@ def mark_task():
             print(f"New task status: {task["status"]}")
             print(f"Task updated at: {task["updated_status_at"]}")
             break
+
+    with open("tasks.json", "w") as file:
+        json.dump(tasks_dict, file, indent=2)
 
 
 def observe_task():
@@ -162,6 +193,11 @@ while True:
             user_input = int(input("Enter your number of choice (1-6): "))
         except ValueError:
             print("Oops, Wrong input!")
+
+    if (not tasks_list) and (user_input in [2, 3, 4, 5]):
+        print("No task available!")
+        continue
+    
     match user_input:
         case 1:
             add_task()

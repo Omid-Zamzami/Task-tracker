@@ -2,9 +2,27 @@ from datetime import datetime
 import json
 import sys
 
-tasks_list = []
+
+initial_dict = {"tasks": []}
+
+try:
+    with open("tasks.json", "r") as file:
+        initial_dict = json.load(file)
+
+except FileNotFoundError:
+    with open("tasks.json", "w") as file:
+        json.dump(initial_dict, file, indent=2)
+
+tasks_list = initial_dict["tasks"]
 tasks_dict = {"tasks": tasks_list}
-id = 1
+
+id = 0
+if not tasks_list:
+    id = 1
+else:
+    last_task = len(tasks_list) - 1
+    id = tasks_list[last_task]["id"] + 1
+
 
 def welcome():
     print("***** Welcome to Task Tracker *****")
@@ -20,7 +38,6 @@ def main_menu():
     print("4. Mark task")
     print("5. Observe tasks (all tasks, todo, in-progress, done)")
     print("6. Quit Task Tracker\n")
-
 
 def add_task():
     task = {}
@@ -40,7 +57,7 @@ def add_task():
     task["status"] = task_status
     task["created_at"] = created_at
     tasks_list.append(task)
-    
+
     print(f"Task '{task_description}' created")
     print(f"Task id: {task_id}")
     print(f"Status: {task_status}")
@@ -198,7 +215,7 @@ while True:
             print("Oops, Wrong input!")
 
     if (not tasks_list) and (user_input in [2, 3, 4, 5]):
-        print("There is no tasks!\n")
+        print("No task available!")
         continue
     
     match user_input:

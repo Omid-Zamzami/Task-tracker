@@ -1,7 +1,9 @@
-import sys
 from datetime import datetime
+import json
+import sys
 
 tasks_list = []
+tasks_dict = {"tasks": tasks_list}
 id = 1
 
 def welcome():
@@ -44,10 +46,17 @@ def add_task():
     print(f"Status: {task_status}")
     print(f"Created at: {created_at}")
 
+    with open("tasks.json", "w") as file:
+        json.dump(tasks_dict, file, indent=2)
+
 
 def update_task():
+    with open("tasks.json", "r") as file:
+        data = json.load(file)
+    data_list = data["tasks"]
+
     task_id = 0
-    number_of_tasks = len(tasks_list)
+    number_of_tasks = len(data_list)
     while task_id < 1 or task_id > number_of_tasks:
         try:
             task_id = int(input(f"Enter the task's id that you want to update (1-{number_of_tasks}): "))
@@ -67,11 +76,18 @@ def update_task():
             print(f"Task updated at: {task["updated_description_at"]}")
             break
 
+    with open("tasks.json", "w") as file:
+        json.dump(tasks_dict, file, indent=2)
+
 
 def delete_task():
+    with open("tasks.json", "r") as file:
+        data = json.load(file)
+    data_list = data["tasks"]
+
     global id
     task_id = 0
-    number_of_tasks = len(tasks_list)
+    number_of_tasks = len(data_list)
     while task_id < 1 or task_id > number_of_tasks:
         try:
             task_id = int(input(f"Enter the task's id that you want to delete (1-{number_of_tasks}): "))
@@ -95,10 +111,17 @@ def delete_task():
                         other_task["id"] -= 1
                 id -= 1
 
+    with open("tasks.json", "w") as file:
+        json.dump(tasks_dict, file, indent=2)
+
 
 def mark_task():
+    with open("tasks.json", "r") as file:
+        data = json.load(file)
+    data_list = data["tasks"]
+    
     task_id = 0
-    number_of_tasks = len(tasks_list)
+    number_of_tasks = len(data_list)
     while task_id < 1 or task_id > number_of_tasks:
         try:
             task_id = int(input(f"Enter the task's id that you want to change its status (1-{number_of_tasks}): "))
@@ -120,8 +143,15 @@ def mark_task():
             print(f"Task updated at: {task["updated_status_at"]}")
             break
 
+    with open("tasks.json", "w") as file:
+        json.dump(tasks_dict, file, indent=2)
+
 
 def observe_task():
+    with open("tasks.json", "r") as file:
+        data = json.load(file)
+    data_list = data["tasks"]
+
     user_status = input("Enter status to see the task(s) with the same status (all tasks, todo, in-progress, done): ").lower()
     while user_status not in ["all tasks", "todo", "in-progress", "done"]:
         user_status = input("Wrong input! Try again (all tasks, todo, in-progress, done): ").lower()
@@ -129,13 +159,13 @@ def observe_task():
     print()
 
     if user_status == "all tasks":
-        for task in tasks_list:
+        for task in data_list:
             for key, value in task.items():
                 print(f"{key}: {value}")
             print()
 
     else:
-        for task in tasks_list:
+        for task in data_list:
             if task["status"] == user_status:
                 for key, value in task.items():
                     print(f"{key}: {value}")
@@ -154,6 +184,10 @@ def quit_task_tracker():
 
 
 welcome()
+
+with open("tasks.json", "w") as file:
+    json.dump(tasks_dict, file, indent=2)
+
 while True:
     main_menu()
     user_input = 0
@@ -162,6 +196,11 @@ while True:
             user_input = int(input("Enter your number of choice (1-6): "))
         except ValueError:
             print("Oops, Wrong input!")
+
+    if (not tasks_list) and (user_input in [2, 3, 4, 5]):
+        print("There is no tasks!\n")
+        continue
+    
     match user_input:
         case 1:
             add_task()

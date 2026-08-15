@@ -244,38 +244,39 @@ def quit_task_tracker():
 
 
 # MAIN EXECUTION LOOP
-welcome()
-while True:
-    main_menu()
-    user_input = 0
-
-    # Parse and validate menu choice
-    try:
-        user_input = int(input("Enter your number of choice (1-6): "))
-    except ValueError:
-        print("Oops, Wrong input! Please enter a number between 1 and 6.\n")
-        continue
-
-    if user_input not in [1, 2, 3, 4, 5, 6]:
-        print("Invalid choice! Please select between 1 and 6.\n")
-        continue
-
-    # Prevent attempting operations when database is empty
-    if not tasks_list and user_input in [2, 3, 4, 5]:
-        print("No task available!\n")
-        continue
-
-    # Dispatch command matching choice
-    match user_input:
-        case 1:
-            add_task()
-        case 2:
-            update_task()
-        case 3:
-            delete_task()
-        case 4:
-            mark_task()
-        case 5:
-            observe_task()
-        case 6:
-            quit_task_tracker()
+if __name__ == "__main__":
+    welcome()
+    while True:
+        main_menu()
+        user_input = 0
+    
+        # Parse and validate menu choice
+        try:
+            user_input = int(input("Enter your number of choice (1-6): "))
+        except ValueError:
+            print("Oops, Wrong input! Please enter a number between 1 and 6.\n")
+            continue
+        
+        if user_input not in [1, 2, 3, 4, 5, 6]:
+            print("Invalid choice! Please select between 1 and 6.\n")
+            continue
+        
+        # Prevent attempting operations when database is empty
+        if not tasks_list and user_input in [2, 3, 4, 5]:
+            print("No task available!\n")
+            continue
+        
+        # Dispatch command matching choice
+        match user_input:
+            case 1:
+                add_task()
+            case 2:
+                update_task()
+            case 3:
+                delete_task()
+            case 4:
+                mark_task()
+            case 5:
+                observe_task()
+            case 6:
+                quit_task_tracker()

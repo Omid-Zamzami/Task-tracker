@@ -88,3 +88,7 @@ Task-tracker/
 ├── task_tracker.py     # Main application source code
 └── test_task_tracker.py# Automated unit test suite
 ```
+
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
